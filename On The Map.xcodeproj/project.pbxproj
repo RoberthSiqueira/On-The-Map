@@ -58,13 +58,20 @@
 			children = (
 				4A9458202B23B7E50028A2AD /* AppDelegate.swift */,
 				4A9458222B23B7E50028A2AD /* SceneDelegate.swift */,
-				4A9458242B23B7E50028A2AD /* ViewController.swift */,
-				4A9458262B23B7E50028A2AD /* Main.storyboard */,
-				4A9458292B23B7E60028A2AD /* Assets.xcassets */,
-				4A94582B2B23B7E60028A2AD /* LaunchScreen.storyboard */,
 				4A94582E2B23B7E60028A2AD /* Info.plist */,
+				4A9458242B23B7E50028A2AD /* ViewController.swift */,
+				4A9458342B23BA3A0028A2AD /* Assets */,
 			);
 			path = "On The Map";
+			sourceTree = "<group>";
+		};
+		4A9458342B23BA3A0028A2AD /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				4A9458292B23B7E60028A2AD /* Assets.xcassets */,
+				4A94582B2B23B7E60028A2AD /* LaunchScreen.storyboard */,
+			);
+			path = Assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
