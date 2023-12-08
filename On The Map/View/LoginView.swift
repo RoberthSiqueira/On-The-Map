@@ -7,15 +7,32 @@ protocol LoginViewDelegate: AnyObject {
 
 final class LoginView: UIView {
 
-    // MARK: - PROPERTIES
+    // MARK: - Properties}
 
     weak var delegate: LoginViewDelegate?
 
-    // MARK: - PUBLIC API
+    // MARK: - API
+
+    var username: String {
+        return emailTextField.text ?? ""
+    }
+
+    var password: String {
+        return passwordTextField.text ?? ""
+    }
 
     func setupView() {
         backgroundColor = .white
         addViewHierarchy()
+    }
+
+    func loginErrorState(with message: String) {
+        feedbackLabel.text = message
+        feedbackLabel.isHidden = false
+        emailTextField.isEnabled = true
+        passwordTextField.isEnabled = true
+        loginButton.isEnabled = true
+        signupButton.isEnabled = true
     }
 
     // MARK: - UI
@@ -42,6 +59,8 @@ final class LoginView: UIView {
         let textField = UITextField(frame: .zero)
         textField.placeholder = "E-mail"
         textField.textContentType = .emailAddress
+        textField.keyboardType = .emailAddress
+        textField.autocapitalizationType = .none
         return textField
     }()
 
@@ -49,6 +68,7 @@ final class LoginView: UIView {
         let textField = UITextField(frame: .zero)
         textField.placeholder = "Password"
         textField.textContentType = .password
+        textField.isSecureTextEntry = true
         return textField
     }()
 
@@ -58,6 +78,13 @@ final class LoginView: UIView {
         button.setTitle("Login", for: .normal)
         button.addTarget(self, action: #selector(loginAction), for: .touchUpInside)
         return button
+    }()
+
+    private lazy var feedbackLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.textColor = .red
+        label.isHidden = true
+        return label
     }()
 
     private lazy var signupButton: UIButton = {
@@ -78,6 +105,7 @@ final class LoginView: UIView {
         contentStackView.addArrangedSubview(emailTextField)
         contentStackView.addArrangedSubview(passwordTextField)
         contentStackView.addArrangedSubview(loginButton)
+        contentStackView.addArrangedSubview(feedbackLabel)
         contentStackView.addArrangedSubview(signupButton)
 
         setupConstraints()
@@ -92,22 +120,30 @@ final class LoginView: UIView {
         ])
 
         NSLayoutConstraint.activate([
-            contentStackView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 16),
+            contentStackView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 40),
             contentStackView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 16),
             contentStackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -16)
         ])
     }
 
+    // MARK: - Methods
+
+    private func logginState() {
+        feedbackLabel.isHidden = true
+        emailTextField.isEnabled = false
+        passwordTextField.isEnabled = false
+        loginButton.isEnabled = false
+        signupButton.isEnabled = false
+    }
+
     // MARK: - UIActions
 
     @objc private func loginAction(_ sender: UIButton) {
+        logginState()
         delegate?.didtapLogin()
-        print(sender)
     }
 
     @objc private func signupAction(_ sender: UIButton) {
         delegate?.didtapSigUp()
-        let url = "https://www.udacity.com/account/auth#!/signup"
-        print("URL to SignUp: \(url)")
     }
 }
