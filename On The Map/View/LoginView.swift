@@ -1,7 +1,7 @@
 import UIKit
 
 protocol LoginViewDelegate: AnyObject {
-    func didtapLogin()
+    func didtapLogin(username: String, password: String)
     func didtapSigUp()
 }
 
@@ -13,33 +13,18 @@ final class LoginView: UIView {
 
     // MARK: - API
 
-    var username: String {
-        return emailTextField.text ?? ""
-    }
-
-    var password: String {
-        return passwordTextField.text ?? ""
-    }
-
     func setupView() {
         backgroundColor = .white
         addViewHierarchy()
     }
 
-    func isLoggingState(_ isLogging: Bool) {
-        emailTextField.isEnabled = !isLogging
-        passwordTextField.isEnabled = !isLogging
-        loginButton.isEnabled = !isLogging
-        signupButton.isEnabled = !isLogging
-
-        if isLogging {
-            feedbackLabel.isHidden = true
-        }
+    func isLogging(_ isLogging: Bool) {
+        contentStackView.isUserInteractionEnabled = !isLogging
     }
 
-    func loginErrorState(with message: String) {
+    func loginErrorState(shouldShow: Bool, with message: String?) {
+        feedbackLabel.isHidden = !shouldShow
         feedbackLabel.text = message
-        feedbackLabel.isHidden = false
     }
 
     // MARK: - UI
@@ -136,7 +121,16 @@ final class LoginView: UIView {
     // MARK: - UIActions
 
     @objc private func loginAction(_ sender: UIButton) {
-        delegate?.didtapLogin()
+        guard let username = emailTextField.text,
+              let password = passwordTextField.text,
+              !username.isEmpty, !password.isEmpty else {
+            loginErrorState(shouldShow: true, with: "Must specify an email and password")
+            isLogging(false)
+            return
+        }
+        loginErrorState(shouldShow: false, with: nil)
+        isLogging(true)
+        delegate?.didtapLogin(username: username, password: password)
     }
 
     @objc private func signupAction(_ sender: UIButton) {

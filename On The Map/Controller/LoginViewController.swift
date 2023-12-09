@@ -26,13 +26,8 @@ class LoginViewController: UIViewController {
         navigationController?.navigationBar.isHidden = false
     }
 
-    private func requestLogin() {
-        if loginView.username.isEmpty || loginView.password.isEmpty {
-            loginView.loginErrorState(with: "Must specify an email and password")
-        } else {
-            Client.postSession(username: loginView.username, password: loginView.password, completion: handleRequestLogin(success:error:))
-        }
-        loginView.isLoggingState(false)
+    private func requestLogin(with username: String, and password: String) {
+        Client.postSession(username: username, password: password, completion: handleRequestLogin(success:error:))
     }
 
     private func handleRequestLogin(success: Bool, error: Error?) {
@@ -40,14 +35,16 @@ class LoginViewController: UIViewController {
             let tabBarController = TabBarController()
             navigationController?.pushViewController(tabBarController, animated: true)
         } else {
-            loginView.loginErrorState(with: error?.localizedDescription ?? "")
+            let error = error?.localizedDescription ?? ""
+            loginView.loginErrorState(shouldShow: true, with: error)
         }
+        loginView.isLogging(false)
     }
 }
 
 extension LoginViewController: LoginViewDelegate {
-    func didtapLogin() {
-        requestLogin()
+    func didtapLogin(username: String, password: String) {
+        requestLogin(with: username, and: password)
     }
 
     func didtapSigUp() {
