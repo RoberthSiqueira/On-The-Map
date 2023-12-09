@@ -19,6 +19,8 @@
 		4A9458462B23E34D0028A2AD /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9458452B23E34D0028A2AD /* ErrorResponse.swift */; };
 		4A9458482B23E5700028A2AD /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9458472B23E5700028A2AD /* TabBarController.swift */; };
 		4A94584A2B23E8EF0028A2AD /* TabBarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9458492B23E8EF0028A2AD /* TabBarItems.swift */; };
+		4A94584C2B23EF510028A2AD /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A94584B2B23EF510028A2AD /* MapViewController.swift */; };
+		4A94584E2B23EF6F0028A2AD /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A94584D2B23EF6F0028A2AD /* MapView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		4A9458452B23E34D0028A2AD /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
 		4A9458472B23E5700028A2AD /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		4A9458492B23E8EF0028A2AD /* TabBarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItems.swift; sourceTree = "<group>"; };
+		4A94584B2B23EF510028A2AD /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		4A94584D2B23EF6F0028A2AD /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +105,7 @@
 			children = (
 				4A9458242B23B7E50028A2AD /* LoginViewController.swift */,
 				4A9458472B23E5700028A2AD /* TabBarController.swift */,
+				4A94584B2B23EF510028A2AD /* MapViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -110,6 +115,7 @@
 			children = (
 				4A9458382B23C5250028A2AD /* LoginView.swift */,
 				4A9458492B23E8EF0028A2AD /* TabBarItems.swift */,
+				4A94584D2B23EF6F0028A2AD /* MapView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -211,6 +217,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A94584C2B23EF510028A2AD /* MapViewController.swift in Sources */,
+				4A94584E2B23EF6F0028A2AD /* MapView.swift in Sources */,
 				4A9458252B23B7E50028A2AD /* LoginViewController.swift in Sources */,
 				4A9458212B23B7E50028A2AD /* AppDelegate.swift in Sources */,
 				4A94584A2B23E8EF0028A2AD /* TabBarItems.swift in Sources */,

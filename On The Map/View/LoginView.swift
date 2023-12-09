@@ -27,15 +27,19 @@ final class LoginView: UIView {
     }
 
     func isLoggingState(_ isLogging: Bool) {
-        feedbackLabel.isHidden = isLogging
         emailTextField.isEnabled = !isLogging
         passwordTextField.isEnabled = !isLogging
         loginButton.isEnabled = !isLogging
         signupButton.isEnabled = !isLogging
+
+        if isLogging {
+            feedbackLabel.isHidden = true
+        }
     }
 
     func loginErrorState(with message: String) {
         feedbackLabel.text = message
+        feedbackLabel.isHidden = false
     }
 
     // MARK: - UI

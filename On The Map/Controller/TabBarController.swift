@@ -17,7 +17,7 @@ class TabBarController: UITabBarController {
     // MARK: - Methods
 
     private func setupViewControllers() {
-        let mapVC = UIViewController()
+        let mapVC = MapViewController()
         let listVC = UIViewController()
 
         let mapNavigationController = UINavigationController(rootViewController: mapVC)
