@@ -22,6 +22,9 @@
 		4A94584C2B23EF510028A2AD /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A94584B2B23EF510028A2AD /* MapViewController.swift */; };
 		4A94584E2B23EF6F0028A2AD /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A94584D2B23EF6F0028A2AD /* MapView.swift */; };
 		4A9458532B2400710028A2AD /* StudentLocations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9458522B2400710028A2AD /* StudentLocations.swift */; };
+		4A9458552B240BF80028A2AD /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9458542B240BF80028A2AD /* ListViewController.swift */; };
+		4A9458572B240CBE0028A2AD /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9458562B240CBE0028A2AD /* ListView.swift */; };
+		4A9458592B240F740028A2AD /* LogoutProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9458582B240F740028A2AD /* LogoutProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +46,9 @@
 		4A94584D2B23EF6F0028A2AD /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		4A9458502B23FC690028A2AD /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		4A9458522B2400710028A2AD /* StudentLocations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentLocations.swift; sourceTree = "<group>"; };
+		4A9458542B240BF80028A2AD /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		4A9458562B240CBE0028A2AD /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
+		4A9458582B240F740028A2AD /* LogoutProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutProtocol.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +116,7 @@
 				4A9458242B23B7E50028A2AD /* LoginViewController.swift */,
 				4A9458472B23E5700028A2AD /* TabBarController.swift */,
 				4A94584B2B23EF510028A2AD /* MapViewController.swift */,
+				4A9458542B240BF80028A2AD /* ListViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -119,7 +126,9 @@
 			children = (
 				4A9458382B23C5250028A2AD /* LoginView.swift */,
 				4A9458492B23E8EF0028A2AD /* TabBarItems.swift */,
+				4A9458582B240F740028A2AD /* LogoutProtocol.swift */,
 				4A94584D2B23EF6F0028A2AD /* MapView.swift */,
+				4A9458562B240CBE0028A2AD /* ListView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -232,13 +241,16 @@
 			files = (
 				4A94584C2B23EF510028A2AD /* MapViewController.swift in Sources */,
 				4A94584E2B23EF6F0028A2AD /* MapView.swift in Sources */,
+				4A9458572B240CBE0028A2AD /* ListView.swift in Sources */,
 				4A9458252B23B7E50028A2AD /* LoginViewController.swift in Sources */,
 				4A9458212B23B7E50028A2AD /* AppDelegate.swift in Sources */,
 				4A94584A2B23E8EF0028A2AD /* TabBarItems.swift in Sources */,
 				4A9458442B23DD390028A2AD /* SessionResponse.swift in Sources */,
+				4A9458552B240BF80028A2AD /* ListViewController.swift in Sources */,
 				4A9458402B23D2230028A2AD /* SessionRequest.swift in Sources */,
 				4A9458482B23E5700028A2AD /* TabBarController.swift in Sources */,
 				4A9458392B23C5250028A2AD /* LoginView.swift in Sources */,
+				4A9458592B240F740028A2AD /* LogoutProtocol.swift in Sources */,
 				4A94583C2B23C8150028A2AD /* Client.swift in Sources */,
 				4A9458232B23B7E50028A2AD /* SceneDelegate.swift in Sources */,
 				4A9458462B23E34D0028A2AD /* ErrorResponse.swift in Sources */,

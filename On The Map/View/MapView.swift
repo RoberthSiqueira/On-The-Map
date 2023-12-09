@@ -1,15 +1,11 @@
 import UIKit
 import MapKit
 
-protocol MapViewDelegate: AnyObject {
-    func didtapLogout()
-}
-
 final class MapView: UIView {
 
     // MARK: - Properties
 
-    weak var delegate: MapViewDelegate?
+    weak var delegate: LogoutProtocol?
 
     // MARK: - UI
 
