@@ -38,7 +38,7 @@ class MapViewController: UIViewController {
 
     private func handleRequestStudentLocations(studentLocations: [StudentLocation], error: Error?) {
         if !studentLocations.isEmpty && error == nil {
-            print(studentLocations)
+            createAnnotations(by: studentLocations)
         } else {
             print(error)
         }
@@ -49,14 +49,28 @@ class MapViewController: UIViewController {
             navigationController?.parent?.navigationController?.popViewController(animated: true)
         }
     }
+
+    private func createAnnotations(by studentLocations: [StudentLocation]) {
+        var annotations: [MKAnnotation] = []
+
+        for location in studentLocations {
+            let lat = CLLocationDegrees(location.latitude)
+            let long = CLLocationDegrees(location.longitude)
+            let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
+
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = coordinate
+            annotation.title = "\(location.firstName) \(location.lastName)"
+            annotation.subtitle = location.mediaURL
+
+            annotations.append(annotation)
+        }
+        mapView.setupAnnotations(annotations: annotations)
+    }
 }
 
 extension MapViewController: MapViewDelegate {
     func didtapLogout() {
         requestLogout()
     }
-}
-
-extension MapViewController: MKMapViewDelegate {
-
 }

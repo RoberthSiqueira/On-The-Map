@@ -28,6 +28,7 @@ final class MapView: UIView {
         mapView.isRotateEnabled = true
         mapView.isMultipleTouchEnabled = true
         mapView.showsCompass = true
+        mapView.delegate = self
         return mapView
     }()
 
@@ -36,6 +37,10 @@ final class MapView: UIView {
     func setupView() {
         backgroundColor = .white
         addViewHierarchy()
+    }
+
+    func setupAnnotations(annotations: [MKAnnotation]) {
+        mapView.addAnnotations(annotations)
     }
 
     // MARK: View
@@ -61,5 +66,36 @@ final class MapView: UIView {
 
     @objc private func logoutAction(_ sender: UIBarButtonItem) {
         delegate?.didtapLogout()
+    }
+}
+
+extension MapView: MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+
+        let reuseId = "pin"
+
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKMarkerAnnotationView
+
+        if pinView == nil {
+            pinView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            pinView?.canShowCallout = true
+            pinView?.markerTintColor = .red
+            pinView?.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+        }
+        else {
+            pinView!.annotation = annotation
+        }
+
+        return pinView
+    }
+
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        if control == view.rightCalloutAccessoryView {
+            let app = UIApplication.shared
+            if let mediaURL = view.annotation?.subtitle {
+                guard let url = URL(string: mediaURL ?? "") else { return }
+                app.open(url)
+            }
+        }
     }
 }
