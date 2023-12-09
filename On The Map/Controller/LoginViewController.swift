@@ -36,7 +36,7 @@ class LoginViewController: UIViewController {
             navigationController?.pushViewController(tabBarController, animated: true)
         } else {
             let error = error?.localizedDescription ?? ""
-            loginView.loginErrorState(shouldShow: true, with: error)
+            loginView.loginErrorState(shouldShow: true, message: error)
         }
         loginView.isLogging(false)
     }

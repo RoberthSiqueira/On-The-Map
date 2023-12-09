@@ -4,7 +4,7 @@ final class ListView: UIView {
 
     // MARK: - Properties
 
-    weak var delegate: LogoutProtocol?
+    weak var delegate: BarItemsActionsProtocol?
 
     private var studentLocations: [StudentLocation] = [] {
         didSet {
@@ -15,9 +15,27 @@ final class ListView: UIView {
     // MARK: - UI
 
     lazy var logoutButton: UIBarButtonItem = {
-        let barButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logoutAction))
-        barButtonItem.title = "Logout"
+        let barButtonItem = UIBarButtonItem(title: "LOGOUT", style: .plain, target: self, action: #selector(logoutAction))
+        barButtonItem.title = "LOGOUT"
         return barButtonItem
+    }()
+
+    lazy var plusButton: UIBarButtonItem = {
+        let barButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(informationPostingAction))
+        return barButtonItem
+    }()
+
+    lazy var refreshButton: UIBarButtonItem = {
+        let barButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(reloadLocationsAction))
+        return barButtonItem
+    }()
+
+    private lazy var loadingIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(frame: .zero)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.startAnimating()
+        return activityIndicator
     }()
 
     private lazy var tableView: UITableView = {
@@ -27,6 +45,7 @@ final class ListView: UIView {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.isHidden = true
         return tableView
     }()
 
@@ -41,9 +60,21 @@ final class ListView: UIView {
         self.studentLocations = studentLocations
     }
 
+    func requestingData() {
+        loadingIndicator.startAnimating()
+        loadingIndicator.isHidden = false
+        tableView.isHidden = true
+    }
+
+    func dataRequested() {
+        loadingIndicator.stopAnimating()
+        tableView.isHidden = false
+    }
+
     // MARK: View
 
     private func addViewHierarchy() {
+        addSubview(loadingIndicator)
         addSubview(tableView)
 
         setupConstraints()
@@ -51,6 +82,11 @@ final class ListView: UIView {
 
     private func setupConstraints() {
         let safeArea = safeAreaLayoutGuide
+
+        NSLayoutConstraint.activate([
+            loadingIndicator.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: safeArea.centerYAnchor)
+        ])
 
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: safeArea.topAnchor),
@@ -64,6 +100,14 @@ final class ListView: UIView {
 
     @objc private func logoutAction(_ sender: UIBarButtonItem) {
         delegate?.didtapLogout()
+    }
+
+    @objc private func reloadLocationsAction(_ sender: UIBarButtonItem) {
+        delegate?.didtapReloadLocations()
+    }
+
+    @objc private func informationPostingAction(sender: UIBarButtonItem) {
+        delegate?.didtapInformationPosting()
     }
 }
 

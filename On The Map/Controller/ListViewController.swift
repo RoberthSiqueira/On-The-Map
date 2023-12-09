@@ -25,13 +25,16 @@ class ListViewController: UIViewController {
     private func setupNavigation() {
         navigationItem.title = "On The Map"
         navigationItem.setLeftBarButton(listView.logoutButton, animated: true)
+        navigationItem.setRightBarButtonItems([listView.plusButton, listView.refreshButton], animated: true)
     }
 
     private func requestStudentLocations() {
+        listView.requestingData()
         Client.getStudentLocation(completion: handleRequestStudentLocations(studentLocations:error:))
     }
 
     private func requestLogout() {
+        listView.requestingData()
         Client.deleteSession(completion: handleRequestLogout(success:error:))
     }
 
@@ -39,8 +42,11 @@ class ListViewController: UIViewController {
         if !studentLocations.isEmpty && error == nil {
             populateTableView(with: studentLocations)
         } else {
-            print(error)
+            let alert = UIAlertController(title: "Locations unavailable", message: error?.localizedDescription, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
         }
+        listView.dataRequested()
     }
 
     private func handleRequestLogout(success: Bool, error: Error?) {
@@ -54,8 +60,17 @@ class ListViewController: UIViewController {
     }
 }
 
-extension ListViewController: LogoutProtocol {
+extension ListViewController: BarItemsActionsProtocol {
     func didtapLogout() {
         requestLogout()
+    }
+
+    func didtapReloadLocations() {
+        requestStudentLocations()
+    }
+
+    func didtapInformationPosting() {
+        let informationPostingVC = InformationPostingViewController()
+        navigationController?.pushViewController(informationPostingVC, animated: true)
     }
 }

@@ -18,6 +18,7 @@ class MapViewController: UIViewController {
         mapView.delegate = self
         view = mapView
 
+        mapView.requestingData()
         requestStudentLocations()
     }
 
@@ -26,13 +27,16 @@ class MapViewController: UIViewController {
     private func setupNavigation() {
         navigationItem.title = "On The Map"
         navigationItem.setLeftBarButton(mapView.logoutButton, animated: true)
+        navigationItem.setRightBarButtonItems([mapView.plusButton, mapView.refreshButton], animated: true)
     }
 
     private func requestStudentLocations() {
+        mapView.requestingData()
         Client.getStudentLocation(completion: handleRequestStudentLocations(studentLocations:error:))
     }
 
     private func requestLogout() {
+        mapView.requestingData()
         Client.deleteSession(completion: handleRequestLogout(success:error:))
     }
 
@@ -40,8 +44,11 @@ class MapViewController: UIViewController {
         if !studentLocations.isEmpty && error == nil {
             createAnnotations(by: studentLocations)
         } else {
-            print(error)
+            let alert = UIAlertController(title: "Locations unavailable", message: error?.localizedDescription, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
         }
+        mapView.dataRequested()
     }
 
     private func handleRequestLogout(success: Bool, error: Error?) {
@@ -69,8 +76,18 @@ class MapViewController: UIViewController {
     }
 }
 
-extension MapViewController: LogoutProtocol {
+extension MapViewController: BarItemsActionsProtocol {
     func didtapLogout() {
         requestLogout()
     }
+
+    func didtapReloadLocations() {
+        requestStudentLocations()
+    }
+
+    func didtapInformationPosting() {
+        let informationPostingVC = InformationPostingViewController()
+        navigationController?.pushViewController(informationPostingVC, animated: true)
+    }
+
 }

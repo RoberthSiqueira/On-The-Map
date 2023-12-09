@@ -5,14 +5,32 @@ final class MapView: UIView {
 
     // MARK: - Properties
 
-    weak var delegate: LogoutProtocol?
+    weak var delegate: BarItemsActionsProtocol?
 
     // MARK: - UI
 
     lazy var logoutButton: UIBarButtonItem = {
-        let barButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logoutAction))
-        barButtonItem.title = "Logout"
+        let barButtonItem = UIBarButtonItem(title: "LOGOUT", style: .plain, target: self, action: #selector(logoutAction))
+        barButtonItem.title = "LOGOUT"
         return barButtonItem
+    }()
+
+    lazy var plusButton: UIBarButtonItem = {
+        let barButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(informationPostingAction))
+        return barButtonItem
+    }()
+
+    lazy var refreshButton: UIBarButtonItem = {
+        let barButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(reloadLocationsAction))
+        return barButtonItem
+    }()
+
+    private lazy var loadingIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(frame: .zero)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.startAnimating()
+        return activityIndicator
     }()
 
     private lazy var mapView: MKMapView = {
@@ -25,6 +43,7 @@ final class MapView: UIView {
         mapView.isMultipleTouchEnabled = true
         mapView.showsCompass = true
         mapView.delegate = self
+        mapView.isHidden = true
         return mapView
     }()
 
@@ -39,9 +58,21 @@ final class MapView: UIView {
         mapView.addAnnotations(annotations)
     }
 
+    func requestingData() {
+        loadingIndicator.startAnimating()
+        loadingIndicator.isHidden = false
+        mapView.isHidden = true
+    }
+
+    func dataRequested() {
+        loadingIndicator.stopAnimating()
+        mapView.isHidden = false
+    }
+
     // MARK: View
 
     private func addViewHierarchy() {
+        addSubview(loadingIndicator)
         addSubview(mapView)
 
         setupConstraints()
@@ -49,6 +80,11 @@ final class MapView: UIView {
 
     private func setupConstraints() {
         let safeArea = safeAreaLayoutGuide
+
+        NSLayoutConstraint.activate([
+            loadingIndicator.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: safeArea.centerYAnchor)
+        ])
 
         NSLayoutConstraint.activate([
             mapView.topAnchor.constraint(equalTo: safeArea.topAnchor),
@@ -62,6 +98,14 @@ final class MapView: UIView {
 
     @objc private func logoutAction(_ sender: UIBarButtonItem) {
         delegate?.didtapLogout()
+    }
+
+    @objc private func reloadLocationsAction(_ sender: UIBarButtonItem) {
+        delegate?.didtapReloadLocations()
+    }
+
+    @objc private func informationPostingAction(sender: UIBarButtonItem) {
+        delegate?.didtapInformationPosting()
     }
 }
 

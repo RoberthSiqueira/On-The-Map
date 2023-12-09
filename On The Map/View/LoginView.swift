@@ -22,7 +22,7 @@ final class LoginView: UIView {
         contentStackView.isUserInteractionEnabled = !isLogging
     }
 
-    func loginErrorState(shouldShow: Bool, with message: String?) {
+    func loginErrorState(shouldShow: Bool, message: String?) {
         feedbackLabel.isHidden = !shouldShow
         feedbackLabel.text = message
     }
@@ -67,7 +67,7 @@ final class LoginView: UIView {
     private lazy var loginButton: UIButton = {
         let button = UIButton(frame: .zero)
         button.backgroundColor = UIColor(red: 2/255, green: 179/255, blue: 228/255, alpha: 1)
-        button.setTitle("Login", for: .normal)
+        button.setTitle("LOGIN", for: .normal)
         button.addTarget(self, action: #selector(loginAction), for: .touchUpInside)
         return button
     }()
@@ -84,7 +84,7 @@ final class LoginView: UIView {
         let titleColor = UIColor(red: 2/255, green: 179/255, blue: 228/255, alpha: 1)
         button.backgroundColor = .white
         button.setTitleColor(titleColor, for: .normal)
-        button.setTitle("Sign Up", for: .normal)
+        button.setTitle("SIGN UP", for: .normal)
         button.addTarget(self, action: #selector(signupAction), for: .touchUpInside)
         return button
     }()
@@ -124,11 +124,11 @@ final class LoginView: UIView {
         guard let username = emailTextField.text,
               let password = passwordTextField.text,
               !username.isEmpty, !password.isEmpty else {
-            loginErrorState(shouldShow: true, with: "Must specify an email and password")
+            loginErrorState(shouldShow: true, message: "Must specify an email and password")
             isLogging(false)
             return
         }
-        loginErrorState(shouldShow: false, with: nil)
+        loginErrorState(shouldShow: false, message: nil)
         isLogging(true)
         delegate?.didtapLogin(username: username, password: password)
     }
