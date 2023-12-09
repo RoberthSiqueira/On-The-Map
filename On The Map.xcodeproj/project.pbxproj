@@ -17,6 +17,8 @@
 		4A9458402B23D2230028A2AD /* SessionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A94583F2B23D2230028A2AD /* SessionRequest.swift */; };
 		4A9458442B23DD390028A2AD /* SessionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9458432B23DD390028A2AD /* SessionResponse.swift */; };
 		4A9458462B23E34D0028A2AD /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9458452B23E34D0028A2AD /* ErrorResponse.swift */; };
+		4A9458482B23E5700028A2AD /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9458472B23E5700028A2AD /* TabBarController.swift */; };
+		4A94584A2B23E8EF0028A2AD /* TabBarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9458492B23E8EF0028A2AD /* TabBarItems.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		4A94583F2B23D2230028A2AD /* SessionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRequest.swift; sourceTree = "<group>"; };
 		4A9458432B23DD390028A2AD /* SessionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionResponse.swift; sourceTree = "<group>"; };
 		4A9458452B23E34D0028A2AD /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
+		4A9458472B23E5700028A2AD /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		4A9458492B23E8EF0028A2AD /* TabBarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItems.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				4A9458242B23B7E50028A2AD /* LoginViewController.swift */,
+				4A9458472B23E5700028A2AD /* TabBarController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -104,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				4A9458382B23C5250028A2AD /* LoginView.swift */,
+				4A9458492B23E8EF0028A2AD /* TabBarItems.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -207,8 +213,10 @@
 			files = (
 				4A9458252B23B7E50028A2AD /* LoginViewController.swift in Sources */,
 				4A9458212B23B7E50028A2AD /* AppDelegate.swift in Sources */,
+				4A94584A2B23E8EF0028A2AD /* TabBarItems.swift in Sources */,
 				4A9458442B23DD390028A2AD /* SessionResponse.swift in Sources */,
 				4A9458402B23D2230028A2AD /* SessionRequest.swift in Sources */,
+				4A9458482B23E5700028A2AD /* TabBarController.swift in Sources */,
 				4A9458392B23C5250028A2AD /* LoginView.swift in Sources */,
 				4A94583C2B23C8150028A2AD /* Client.swift in Sources */,
 				4A9458232B23B7E50028A2AD /* SceneDelegate.swift in Sources */,
