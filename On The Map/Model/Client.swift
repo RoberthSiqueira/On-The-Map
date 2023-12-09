@@ -6,10 +6,11 @@ class Client {
         static let baseURL: String = "https://onthemap-api.udacity.com/v1"
 
         case login
+        case logout
 
         var stringValue: String {
             switch self {
-                case .login:
+                case .login, .logout:
                     return Endpoints.baseURL + "/session"
             }
         }
@@ -23,6 +24,17 @@ class Client {
         let sessionRequest = SessionRequest(username: username, password: password)
         let body = UdacityRequest(udacity: sessionRequest)
         taskPOSTRequest(url: Endpoints.login.url, body: body, response: SessionResponse.self) { result in
+            switch result {
+                case .success:
+                    completion(true, nil)
+                case .failure(let error):
+                    completion(false, error)
+            }
+        }
+    }
+
+    class func deleteSession(completion: @escaping (Bool, Error?) -> Void) {
+        taskDELETERequest(url: Endpoints.logout.url, response: SessionResponse.self) { result in
             switch result {
                 case .success:
                     completion(true, nil)
@@ -47,6 +59,54 @@ class Client {
                 completion(.failure(error))
             }
         }
+
+        let urlSession = URLSession.shared
+
+        urlSession.dataTask(with: request) { data, urlResponse, error in
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    completion(.failure(NetworkError.badURL))
+                }
+                return
+            }
+
+            let decoder = JSONDecoder()
+            let newData = data.subdata(in: 5..<data.count)
+
+            do {
+                let object = try decoder.decode(response, from: newData)
+                DispatchQueue.main.async {
+                    completion(.success(object))
+                }
+            } catch {
+                do {
+                    let error = try decoder.decode(ErrorResponse.self, from: newData) as Error
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                }
+            }
+        }.resume()
+    }
+
+    private class func taskDELETERequest<ResponseType: Decodable>(url: URL, response: ResponseType.Type, completion: @escaping (Result<ResponseType, Error>) -> Void) {
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+
+        var xsrfCookie: HTTPCookie? = nil
+        let sharedCookieStorage = HTTPCookieStorage.shared
+        for cookie in sharedCookieStorage.cookies! {
+            if cookie.name == "XSRF-TOKEN" { xsrfCookie = cookie }
+        }
+        if let xsrfCookie = xsrfCookie {
+            request.setValue(xsrfCookie.value, forHTTPHeaderField: "X-XSRF-TOKEN")
+        }
+
+        let encoder = JSONEncoder()
 
         let urlSession = URLSession.shared
 
