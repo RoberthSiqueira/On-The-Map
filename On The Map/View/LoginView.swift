@@ -26,13 +26,16 @@ final class LoginView: UIView {
         addViewHierarchy()
     }
 
+    func isLoggingState(_ isLogging: Bool) {
+        feedbackLabel.isHidden = isLogging
+        emailTextField.isEnabled = !isLogging
+        passwordTextField.isEnabled = !isLogging
+        loginButton.isEnabled = !isLogging
+        signupButton.isEnabled = !isLogging
+    }
+
     func loginErrorState(with message: String) {
         feedbackLabel.text = message
-        feedbackLabel.isHidden = false
-        emailTextField.isEnabled = true
-        passwordTextField.isEnabled = true
-        loginButton.isEnabled = true
-        signupButton.isEnabled = true
     }
 
     // MARK: - UI
@@ -126,20 +129,9 @@ final class LoginView: UIView {
         ])
     }
 
-    // MARK: - Methods
-
-    private func logginState() {
-        feedbackLabel.isHidden = true
-        emailTextField.isEnabled = false
-        passwordTextField.isEnabled = false
-        loginButton.isEnabled = false
-        signupButton.isEnabled = false
-    }
-
     // MARK: - UIActions
 
     @objc private func loginAction(_ sender: UIButton) {
-        logginState()
         delegate?.didtapLogin()
     }
 

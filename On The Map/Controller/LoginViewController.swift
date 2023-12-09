@@ -15,21 +15,29 @@ class LoginViewController: UIViewController {
         loginView.delegate = self
         view = loginView
     }
+
+    private func requestLogin() {
+        if loginView.username.isEmpty || loginView.password.isEmpty {
+            loginView.loginErrorState(with: "Must specify an email and password")
+        } else {
+            Client.postSession(username: loginView.username, password: loginView.password, completion: handleRequestLogin(success:error:))
+        }
+        loginView.isLoggingState(false)
+    }
+
+    private func handleRequestLogin(success: Bool, error: Error?) {
+        if success && error == nil {
+            let tabBarController = TabBarController()
+            navigationController?.pushViewController(tabBarController, animated: true)
+        } else {
+            loginView.loginErrorState(with: error?.localizedDescription ?? "")
+        }
+    }
 }
 
 extension LoginViewController: LoginViewDelegate {
     func didtapLogin() {
-        if loginView.username.isEmpty || loginView.password.isEmpty {
-            loginView.loginErrorState(with: "Must specify an email and password")
-        } else {
-            Client.postSession(username: loginView.username, password: loginView.password) { [weak self] success, error in
-                if success && error == nil {
-                    print(success)
-                } else {
-                    self?.loginView.loginErrorState(with: error?.localizedDescription ?? "")
-                }
-            }
-        }
+        requestLogin()
     }
 
     func didtapSigUp() {
