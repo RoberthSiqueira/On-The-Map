@@ -1,4 +1,5 @@
 import UIKit
+import MapKit
 
 class MapViewController: UIViewController {
 
@@ -10,10 +11,14 @@ class MapViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         setupNavigation()
+
         mapView.setupView()
         mapView.delegate = self
         view = mapView
+
+        requestStudentLocations()
     }
 
     // MARK: - Methods
@@ -23,8 +28,20 @@ class MapViewController: UIViewController {
         navigationItem.setLeftBarButton(mapView.logoutButton, animated: true)
     }
 
+    private func requestStudentLocations() {
+        Client.getStudentLocation(completion: handleRequestStudentLocations(studentLocations:error:))
+    }
+
     private func requestLogout() {
         Client.deleteSession(completion: handleRequestLogout(success:error:))
+    }
+
+    private func handleRequestStudentLocations(studentLocations: [StudentLocation], error: Error?) {
+        if !studentLocations.isEmpty && error == nil {
+            print(studentLocations)
+        } else {
+            print(error)
+        }
     }
 
     private func handleRequestLogout(success: Bool, error: Error?) {
@@ -38,4 +55,8 @@ extension MapViewController: MapViewDelegate {
     func didtapLogout() {
         requestLogout()
     }
+}
+
+extension MapViewController: MKMapViewDelegate {
+
 }

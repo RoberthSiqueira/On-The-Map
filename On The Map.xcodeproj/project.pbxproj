@@ -21,6 +21,7 @@
 		4A94584A2B23E8EF0028A2AD /* TabBarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9458492B23E8EF0028A2AD /* TabBarItems.swift */; };
 		4A94584C2B23EF510028A2AD /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A94584B2B23EF510028A2AD /* MapViewController.swift */; };
 		4A94584E2B23EF6F0028A2AD /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A94584D2B23EF6F0028A2AD /* MapView.swift */; };
+		4A9458532B2400710028A2AD /* StudentLocations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9458522B2400710028A2AD /* StudentLocations.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,7 @@
 		4A94584B2B23EF510028A2AD /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		4A94584D2B23EF6F0028A2AD /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		4A9458502B23FC690028A2AD /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		4A9458522B2400710028A2AD /* StudentLocations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentLocations.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +147,7 @@
 			children = (
 				4A9458432B23DD390028A2AD /* SessionResponse.swift */,
 				4A9458452B23E34D0028A2AD /* ErrorResponse.swift */,
+				4A9458522B2400710028A2AD /* StudentLocations.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -239,6 +242,7 @@
 				4A94583C2B23C8150028A2AD /* Client.swift in Sources */,
 				4A9458232B23B7E50028A2AD /* SceneDelegate.swift in Sources */,
 				4A9458462B23E34D0028A2AD /* ErrorResponse.swift in Sources */,
+				4A9458532B2400710028A2AD /* StudentLocations.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,11 +11,14 @@ class Client {
 
         case login
         case logout
+        case studentLocation
 
         var stringValue: String {
             switch self {
                 case .login, .logout:
                     return Endpoints.baseURL + "/session"
+                case .studentLocation:
+                    return Endpoints.baseURL + "/StudentLocation"
             }
         }
 
@@ -45,6 +48,17 @@ class Client {
                     completion(true, nil)
                 case .failure(let error):
                     completion(false, error)
+            }
+        }
+    }
+
+    class func getStudentLocation(completion: @escaping ([StudentLocation], Error?) -> Void) {
+        taskGETRequest(url: Endpoints.studentLocation.url, response: StudentLocations.self) { result in
+            switch result {
+                case .success(let studentLocations):
+                    completion(studentLocations.results, nil)
+                case .failure(let error):
+                    completion([], error)
             }
         }
     }
@@ -159,16 +173,15 @@ class Client {
             }
 
             let decoder = JSONDecoder()
-            let newData = data.subdata(in: 5..<data.count)
 
             do {
-                let object = try decoder.decode(response, from: newData)
+                let object = try decoder.decode(response, from: data)
                 DispatchQueue.main.async {
                     completion(.success(object))
                 }
             } catch {
                 do {
-                    let error = try decoder.decode(ErrorResponse.self, from: newData) as Error
+                    let error = try decoder.decode(ErrorResponse.self, from: data) as Error
                     DispatchQueue.main.async {
                         completion(.failure(error))
                     }
