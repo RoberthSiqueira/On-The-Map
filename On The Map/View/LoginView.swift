@@ -7,7 +7,7 @@ protocol LoginViewDelegate: AnyObject {
 
 final class LoginView: UIView {
 
-    // MARK: - Properties}
+    // MARK: - Properties
 
     weak var delegate: LoginViewDelegate?
 

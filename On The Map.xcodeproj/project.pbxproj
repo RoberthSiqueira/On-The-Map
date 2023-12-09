@@ -40,6 +40,7 @@
 		4A9458492B23E8EF0028A2AD /* TabBarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItems.swift; sourceTree = "<group>"; };
 		4A94584B2B23EF510028A2AD /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		4A94584D2B23EF6F0028A2AD /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		4A9458502B23FC690028A2AD /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +59,7 @@
 			children = (
 				4A94581F2B23B7E50028A2AD /* On The Map */,
 				4A94581E2B23B7E50028A2AD /* Products */,
+				4A94584F2B23FC690028A2AD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -145,6 +147,14 @@
 				4A9458452B23E34D0028A2AD /* ErrorResponse.swift */,
 			);
 			path = Response;
+			sourceTree = "<group>";
+		};
+		4A94584F2B23FC690028A2AD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4A9458502B23FC690028A2AD /* MapKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

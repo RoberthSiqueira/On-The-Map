@@ -11,6 +11,7 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigation()
+        mapView.setupView()
         mapView.delegate = self
         view = mapView
     }

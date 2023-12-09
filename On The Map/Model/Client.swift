@@ -2,6 +2,10 @@ import Foundation
 
 class Client {
 
+    struct Auth {
+        static var userId: String = ""
+    }
+
     enum Endpoints {
         static let baseURL: String = "https://onthemap-api.udacity.com/v1"
 
@@ -25,7 +29,8 @@ class Client {
         let body = UdacityRequest(udacity: sessionRequest)
         taskPOSTRequest(url: Endpoints.login.url, body: body, response: SessionResponse.self) { result in
             switch result {
-                case .success:
+                case .success(let sessionResponse):
+                    Auth.userId = sessionResponse.account?.userId ?? ""
                     completion(true, nil)
                 case .failure(let error):
                     completion(false, error)
@@ -105,8 +110,6 @@ class Client {
         if let xsrfCookie = xsrfCookie {
             request.setValue(xsrfCookie.value, forHTTPHeaderField: "X-XSRF-TOKEN")
         }
-
-        let encoder = JSONEncoder()
 
         let urlSession = URLSession.shared
 
