@@ -22,6 +22,11 @@ class MapViewController: UIViewController {
         requestStudentLocations()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.tabBarController?.tabBar.isHidden = false
+    }
+
     // MARK: - Methods
 
     private func setupNavigation() {
@@ -88,6 +93,7 @@ extension MapViewController: BarItemsActionsProtocol {
     func didtapInformationPosting() {
         let informationPostingVC = InformationPostingViewController()
         navigationController?.pushViewController(informationPostingVC, animated: true)
+        navigationController?.tabBarController?.tabBar.isHidden = true
     }
 
 }

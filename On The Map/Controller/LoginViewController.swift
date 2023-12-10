@@ -38,12 +38,13 @@ class LoginViewController: UIViewController {
             let error = error?.localizedDescription ?? ""
             loginView.loginErrorState(shouldShow: true, message: error)
         }
-        loginView.isLogging(false)
+        loginView.dataRequested()
     }
 }
 
 extension LoginViewController: LoginViewDelegate {
     func didtapLogin(username: String, password: String) {
+        loginView.requestingData()
         requestLogin(with: username, and: password)
     }
 

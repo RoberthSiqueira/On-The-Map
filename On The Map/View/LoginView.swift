@@ -18,13 +18,24 @@ final class LoginView: UIView {
         addViewHierarchy()
     }
 
-    func isLogging(_ isLogging: Bool) {
-        contentStackView.isUserInteractionEnabled = !isLogging
-    }
-
     func loginErrorState(shouldShow: Bool, message: String?) {
         feedbackLabel.isHidden = !shouldShow
         feedbackLabel.text = message
+    }
+
+    func requestingData() {
+        loadingIndicator.startAnimating()
+        loadingIndicator.isHidden = false
+        loginButton.isHidden = true
+        signupButton.isHidden = true
+        contentStackView.isUserInteractionEnabled = false
+    }
+
+    func dataRequested() {
+        loadingIndicator.stopAnimating()
+        loginButton.isHidden = false
+        signupButton.isHidden = false
+        contentStackView.isUserInteractionEnabled = true
     }
 
     // MARK: - UI
@@ -89,11 +100,22 @@ final class LoginView: UIView {
         return button
     }()
 
+    private lazy var loadingIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(frame: .zero)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.startAnimating()
+        activityIndicator.isHidden = true
+        return activityIndicator
+    }()
+
     // MARK: View
 
     private func addViewHierarchy() {
         addSubview(imageView)
         addSubview(contentStackView)
+        addSubview(loadingIndicator)
+
         contentStackView.addArrangedSubview(emailTextField)
         contentStackView.addArrangedSubview(passwordTextField)
         contentStackView.addArrangedSubview(loginButton)
@@ -116,6 +138,11 @@ final class LoginView: UIView {
             contentStackView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 16),
             contentStackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -16)
         ])
+
+        NSLayoutConstraint.activate([
+            loadingIndicator.centerXAnchor.constraint(equalTo: loginButton.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: loginButton.centerYAnchor)
+        ])
     }
 
     // MARK: - UIActions
@@ -125,11 +152,9 @@ final class LoginView: UIView {
               let password = passwordTextField.text,
               !username.isEmpty, !password.isEmpty else {
             loginErrorState(shouldShow: true, message: "Must specify an email and password")
-            isLogging(false)
             return
         }
         loginErrorState(shouldShow: false, message: nil)
-        isLogging(true)
         delegate?.didtapLogin(username: username, password: password)
     }
 
