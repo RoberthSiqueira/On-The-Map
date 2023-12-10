@@ -12,6 +12,7 @@ class Client {
         case login
         case logout
         case studentLocation
+        case users(uniqueKey: String)
 
         var stringValue: String {
             switch self {
@@ -19,6 +20,8 @@ class Client {
                     return Endpoints.baseURL + "/session"
                 case .studentLocation:
                     return Endpoints.baseURL + "/StudentLocation"
+                case .users(let uniqueKey):
+                    return Endpoints.baseURL + "/users/\(uniqueKey)"
             }
         }
 
@@ -53,12 +56,23 @@ class Client {
     }
 
     class func getStudentLocation(completion: @escaping ([StudentLocation], Error?) -> Void) {
-        taskGETRequest(url: Endpoints.studentLocation.url, response: StudentLocations.self) { result in
+        taskGETRequest(url: Endpoints.studentLocation.url, needsSubdata: false, response: StudentLocations.self) { result in
             switch result {
                 case .success(let studentLocations):
                     completion(studentLocations.results, nil)
                 case .failure(let error):
                     completion([], error)
+            }
+        }
+    }
+
+    class func getUser(completion: @escaping (User?, Error?) -> Void) {
+        taskGETRequest(url: Endpoints.users(uniqueKey: Auth.userId).url, needsSubdata: true, response: User.self) { result in
+            switch result {
+                case .success(let user):
+                    completion(user, nil)
+                case .failure(let error):
+                    completion(nil, error)
             }
         }
     }
@@ -158,7 +172,7 @@ class Client {
         }.resume()
     }
 
-    private class func taskGETRequest<ResponseType: Decodable>(url: URL, response: ResponseType.Type, completion: @escaping (Result<ResponseType, Error>) -> Void) {
+    private class func taskGETRequest<ResponseType: Decodable>(url: URL, needsSubdata: Bool, response: ResponseType.Type, completion: @escaping (Result<ResponseType, Error>) -> Void) {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
 
@@ -175,7 +189,12 @@ class Client {
             let decoder = JSONDecoder()
 
             do {
-                let object = try decoder.decode(response, from: data)
+                var object: ResponseType
+                if needsSubdata {
+                    object = try decoder.decode(response, from: data.subdata(in: 5..<data.count))
+                } else {
+                    object = try decoder.decode(response, from: data)
+                }
                 DispatchQueue.main.async {
                     completion(.success(object))
                 }

@@ -56,6 +56,24 @@ class InformationPostingViewController: UIViewController {
     }
 
     private func saveNewLocation() {
+        informationPostingView.requestingData()
+        Client.getUser(completion: handleGetUser(user:error:))
+    }
+
+    private func handleGetUser(user: User?, error: Error?) {
+        if user?.location == nil && error == nil {
+            // post
+            print(user)
+            print(error)
+        } else if user?.location != nil && error == nil {
+            // put
+            print(user)
+            print(error)
+        } else {
+            let alert = UIAlertController(title: "Locations unavailable", message: error?.localizedDescription, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(alert, animated: true)
+        }
     }
 }
 
