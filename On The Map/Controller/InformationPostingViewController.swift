@@ -55,22 +55,38 @@ class InformationPostingViewController: UIViewController {
         informationPostingView.addAnnotation(annotation)
     }
 
-    private func saveNewLocation() {
+    private func saveNewLocation(annotation: MKAnnotation, mediaURL: String) {
         informationPostingView.requestingData()
-        Client.getUser(completion: handleGetUser(user:error:))
+        Client.getUser { [weak self] user, error in
+            self?.handleGetUser(annotation: annotation, mediaURL: mediaURL, user: user, error: error)
+        }
     }
 
-    private func handleGetUser(user: User?, error: Error?) {
-        if user?.location == nil && error == nil {
-            // post
-            print(user)
-            print(error)
-        } else if user?.location != nil && error == nil {
-            // put
-            print(user)
-            print(error)
+    private func handleGetUser(annotation: MKAnnotation, mediaURL: String, user: User?, error: Error?) {
+        if let user = user, error == nil {
+            let locality: String = (annotation.title ?? "") ?? ""
+            let latitude = annotation.coordinate.latitude.description
+            let longitude = annotation.coordinate.longitude.description
+
+            let userModelView = UserModelView(firstName: user.firstName,
+                                              lastName: user.lastName,
+                                              locality: locality,
+                                              mediaURL: mediaURL,
+                                              latitude: latitude,
+                                              longitude: longitude)
+            Client.postStudentLocation(user: userModelView, completion: handlePostStudentLocation(success:error:))
         } else {
             let alert = UIAlertController(title: "Locations unavailable", message: error?.localizedDescription, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+        }
+    }
+
+    private func handlePostStudentLocation(success: Bool, error: Error?) {
+        if success {
+            navigationController?.popViewController(animated: true)
+        } else {
+            let alert = UIAlertController(title: "Error to finish", message: error?.localizedDescription, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default))
             self.present(alert, animated: true)
         }
@@ -87,7 +103,7 @@ extension InformationPostingViewController: InformationPostingViewDelegate {
         requestLocation(location)
     }
 
-    func didtapFinish() {
-        saveNewLocation()
+    func didtapFinish(annotation: MKAnnotation, mediaURL: String) {
+        saveNewLocation(annotation: annotation, mediaURL: mediaURL)
     }
 }

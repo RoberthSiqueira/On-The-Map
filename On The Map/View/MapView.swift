@@ -123,7 +123,7 @@ extension MapView: MKMapViewDelegate {
             pinView?.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
         }
         else {
-            pinView!.annotation = annotation
+            pinView?.annotation = annotation
         }
 
         return pinView

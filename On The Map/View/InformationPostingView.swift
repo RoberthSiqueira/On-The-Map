@@ -4,7 +4,7 @@ import UIKit
 protocol InformationPostingViewDelegate: AnyObject {
     func didtapCancel()
     func didtapFindLocation(location: String, mediaURL: String)
-    func didtapFinish()
+    func didtapFinish(annotation: MKAnnotation, mediaURL: String)
 }
 
 final class InformationPostingView: UIView {
@@ -12,6 +12,8 @@ final class InformationPostingView: UIView {
     // MARK: - Properties
 
     weak var delegate: InformationPostingViewDelegate?
+
+    private var annotation: MKAnnotation?
 
     // MARK: - API
 
@@ -42,6 +44,8 @@ final class InformationPostingView: UIView {
     }
 
     func addAnnotation(_ annotation: MKAnnotation) {
+        self.annotation = annotation
+        
         let coordinate = annotation.coordinate
         let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
 
@@ -209,7 +213,9 @@ final class InformationPostingView: UIView {
     }
 
     @objc private func finishAction(_ sender: UIButton) {
-        delegate?.didtapFinish()
+        guard let annotation = annotation,
+              let mediaURL = mediaURLTextField.text else { return }
+        delegate?.didtapFinish(annotation: annotation, mediaURL: mediaURL)
     }
 }
 
@@ -225,9 +231,8 @@ extension InformationPostingView: MKMapViewDelegate {
             pinView?.canShowCallout = true
             pinView?.markerTintColor = .red
             pinView?.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
-        }
-        else {
-            pinView!.annotation = annotation
+        } else {
+            pinView?.annotation = annotation
         }
 
         return pinView
