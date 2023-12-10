@@ -2,8 +2,14 @@ import Foundation
 
 class Client {
 
-    struct Auth {
+    private struct Auth {
         static var userId: String = ""
+        static var objectId: String = ""
+    }
+
+    private enum API {
+        case parse
+        case udacity
     }
 
     enum Endpoints {
@@ -11,15 +17,19 @@ class Client {
 
         case login
         case logout
-        case studentLocation
+        case getStudentLocation
+        case postStudentLocation
+        case putStudentLocation
         case users(uniqueKey: String)
 
         var stringValue: String {
             switch self {
                 case .login, .logout:
                     return Endpoints.baseURL + "/session"
-                case .studentLocation:
+                case .getStudentLocation, .postStudentLocation:
                     return Endpoints.baseURL + "/StudentLocation"
+                case .putStudentLocation:
+                    return Endpoints.baseURL + "/StudentLocation" + "/\(Auth.objectId)"
                 case .users(let uniqueKey):
                     return Endpoints.baseURL + "/users/\(uniqueKey)"
             }
@@ -30,10 +40,11 @@ class Client {
         }
     }
 
+
     class func postSession(username: String, password: String, completion: @escaping (Bool, Error?) -> Void) {
         let sessionRequest = SessionRequest(username: username, password: password)
         let body = UdacityRequest(udacity: sessionRequest)
-        taskPOSTRequest(url: Endpoints.login.url, body: body, response: SessionResponse.self) { result in
+        taskPOSTRequest(url: Endpoints.login.url, api: .udacity, body: body, response: SessionResponse.self) { result in
             switch result {
                 case .success(let sessionResponse):
                     Auth.userId = sessionResponse.account?.userId ?? ""
@@ -56,7 +67,7 @@ class Client {
     }
 
     class func getStudentLocation(completion: @escaping ([StudentLocation], Error?) -> Void) {
-        taskGETRequest(url: Endpoints.studentLocation.url, needsSubdata: false, response: StudentLocations.self) { result in
+        taskGETRequest(url: Endpoints.getStudentLocation.url, api: .parse, response: StudentLocations.self) { result in
             switch result {
                 case .success(let studentLocations):
                     completion(studentLocations.results, nil)
@@ -66,8 +77,21 @@ class Client {
         }
     }
 
+    class func postStudentLocation(user: UserModelView, completion: @escaping (Bool, Error?) -> Void) {
+        let body = StudentLocationRequest(userId: Auth.userId, firstName: user.firstName, lastName: user.lastName,
+                                          locality: user.locality, mediaURL: user.mediaURL, latitude: user.latitude, longitude: user.longitude)
+        taskPOSTRequest(url: Endpoints.postStudentLocation.url, api: .parse, body: body, response: Bool.self) { result in
+            switch result {
+                case .success:
+                    completion(true, nil)
+                case .failure(let error):
+                    completion(false, error)
+            }
+        }
+    }
+
     class func getUser(completion: @escaping (User?, Error?) -> Void) {
-        taskGETRequest(url: Endpoints.users(uniqueKey: Auth.userId).url, needsSubdata: true, response: User.self) { result in
+        taskGETRequest(url: Endpoints.users(uniqueKey: Auth.userId).url, api: .udacity, response: User.self) { result in
             switch result {
                 case .success(let user):
                     completion(user, nil)
@@ -77,7 +101,7 @@ class Client {
         }
     }
 
-    private class func taskPOSTRequest<RequestType: Encodable, ResponseType: Decodable>(url: URL, body: RequestType, response: ResponseType.Type, completion: @escaping (Result<ResponseType, Error>) -> Void) {
+    private class func taskPOSTRequest<RequestType: Encodable, ResponseType: Decodable>(url: URL, api: API, body: RequestType, response: ResponseType.Type, completion: @escaping (Result<ResponseType, Error>) -> Void) {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Accept")
@@ -104,16 +128,36 @@ class Client {
             }
 
             let decoder = JSONDecoder()
-            let newData = data.subdata(in: 5..<data.count)
 
             do {
-                let object = try decoder.decode(response, from: newData)
+                var object: ResponseType
+
+                guard ResponseType.self != Bool.self else {
+                    DispatchQueue.main.async {
+                        completion(.success(true as! ResponseType))
+                    }
+                    return
+                }
+
+                switch api {
+                    case .parse:
+                        object = try decoder.decode(response, from: data)
+                    case .udacity:
+                        object = try decoder.decode(response, from: data.subdata(in: 5..<data.count))
+                }
+
                 DispatchQueue.main.async {
                     completion(.success(object))
                 }
             } catch {
                 do {
-                    let error = try decoder.decode(ErrorResponse.self, from: newData) as Error
+                    var error: Error
+                    switch api {
+                        case .parse:
+                            error = try decoder.decode(ErrorResponse.self, from: data) as Error
+                        case .udacity:
+                            error = try decoder.decode(ErrorResponse.self, from: data.subdata(in: 5..<data.count)) as Error
+                    }
                     DispatchQueue.main.async {
                         completion(.failure(error))
                     }
@@ -172,7 +216,7 @@ class Client {
         }.resume()
     }
 
-    private class func taskGETRequest<ResponseType: Decodable>(url: URL, needsSubdata: Bool, response: ResponseType.Type, completion: @escaping (Result<ResponseType, Error>) -> Void) {
+    private class func taskGETRequest<ResponseType: Decodable>(url: URL, api: API, response: ResponseType.Type, completion: @escaping (Result<ResponseType, Error>) -> Void) {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
 
@@ -190,17 +234,24 @@ class Client {
 
             do {
                 var object: ResponseType
-                if needsSubdata {
-                    object = try decoder.decode(response, from: data.subdata(in: 5..<data.count))
-                } else {
-                    object = try decoder.decode(response, from: data)
+                switch api {
+                    case .parse:
+                        object = try decoder.decode(response, from: data)
+                    case .udacity:
+                        object = try decoder.decode(response, from: data.subdata(in: 5..<data.count))
                 }
                 DispatchQueue.main.async {
                     completion(.success(object))
                 }
             } catch {
                 do {
-                    let error = try decoder.decode(ErrorResponse.self, from: data) as Error
+                    var error: Error
+                    switch api {
+                        case .parse:
+                            error = try decoder.decode(ErrorResponse.self, from: data) as Error
+                        case .udacity:
+                            error = try decoder.decode(ErrorResponse.self, from: data.subdata(in: 5..<data.count)) as Error
+                    }
                     DispatchQueue.main.async {
                         completion(.failure(error))
                     }
