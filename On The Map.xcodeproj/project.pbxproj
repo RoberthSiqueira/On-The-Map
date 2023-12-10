@@ -24,7 +24,10 @@
 		4A9458532B2400710028A2AD /* StudentLocations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9458522B2400710028A2AD /* StudentLocations.swift */; };
 		4A9458552B240BF80028A2AD /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9458542B240BF80028A2AD /* ListViewController.swift */; };
 		4A9458572B240CBE0028A2AD /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9458562B240CBE0028A2AD /* ListView.swift */; };
-		4A9458592B240F740028A2AD /* LogoutProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9458582B240F740028A2AD /* LogoutProtocol.swift */; };
+		4A9458592B240F740028A2AD /* BarItemsActionsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9458582B240F740028A2AD /* BarItemsActionsProtocol.swift */; };
+		4A94585B2B2503780028A2AD /* InformationPostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A94585A2B2503780028A2AD /* InformationPostingViewController.swift */; };
+		4A94585D2B25038F0028A2AD /* InformationPostingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A94585C2B25038F0028A2AD /* InformationPostingView.swift */; };
+		4A94585F2B2560B00028A2AD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A94585E2B2560B00028A2AD /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,7 +51,10 @@
 		4A9458522B2400710028A2AD /* StudentLocations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentLocations.swift; sourceTree = "<group>"; };
 		4A9458542B240BF80028A2AD /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		4A9458562B240CBE0028A2AD /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
-		4A9458582B240F740028A2AD /* LogoutProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutProtocol.swift; sourceTree = "<group>"; };
+		4A9458582B240F740028A2AD /* BarItemsActionsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarItemsActionsProtocol.swift; sourceTree = "<group>"; };
+		4A94585A2B2503780028A2AD /* InformationPostingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationPostingViewController.swift; sourceTree = "<group>"; };
+		4A94585C2B25038F0028A2AD /* InformationPostingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationPostingView.swift; sourceTree = "<group>"; };
+		4A94585E2B2560B00028A2AD /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +122,7 @@
 				4A9458242B23B7E50028A2AD /* LoginViewController.swift */,
 				4A9458472B23E5700028A2AD /* TabBarController.swift */,
 				4A94584B2B23EF510028A2AD /* MapViewController.swift */,
+				4A94585A2B2503780028A2AD /* InformationPostingViewController.swift */,
 				4A9458542B240BF80028A2AD /* ListViewController.swift */,
 			);
 			path = Controller;
@@ -126,9 +133,10 @@
 			children = (
 				4A9458382B23C5250028A2AD /* LoginView.swift */,
 				4A9458492B23E8EF0028A2AD /* TabBarItems.swift */,
-				4A9458582B240F740028A2AD /* LogoutProtocol.swift */,
+				4A9458582B240F740028A2AD /* BarItemsActionsProtocol.swift */,
 				4A94584D2B23EF6F0028A2AD /* MapView.swift */,
 				4A9458562B240CBE0028A2AD /* ListView.swift */,
+				4A94585C2B25038F0028A2AD /* InformationPostingView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -157,6 +165,7 @@
 				4A9458432B23DD390028A2AD /* SessionResponse.swift */,
 				4A9458452B23E34D0028A2AD /* ErrorResponse.swift */,
 				4A9458522B2400710028A2AD /* StudentLocations.swift */,
+				4A94585E2B2560B00028A2AD /* User.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -241,6 +250,7 @@
 			files = (
 				4A94584C2B23EF510028A2AD /* MapViewController.swift in Sources */,
 				4A94584E2B23EF6F0028A2AD /* MapView.swift in Sources */,
+				4A94585D2B25038F0028A2AD /* InformationPostingView.swift in Sources */,
 				4A9458572B240CBE0028A2AD /* ListView.swift in Sources */,
 				4A9458252B23B7E50028A2AD /* LoginViewController.swift in Sources */,
 				4A9458212B23B7E50028A2AD /* AppDelegate.swift in Sources */,
@@ -248,13 +258,15 @@
 				4A9458442B23DD390028A2AD /* SessionResponse.swift in Sources */,
 				4A9458552B240BF80028A2AD /* ListViewController.swift in Sources */,
 				4A9458402B23D2230028A2AD /* SessionRequest.swift in Sources */,
+				4A94585B2B2503780028A2AD /* InformationPostingViewController.swift in Sources */,
 				4A9458482B23E5700028A2AD /* TabBarController.swift in Sources */,
 				4A9458392B23C5250028A2AD /* LoginView.swift in Sources */,
-				4A9458592B240F740028A2AD /* LogoutProtocol.swift in Sources */,
+				4A9458592B240F740028A2AD /* BarItemsActionsProtocol.swift in Sources */,
 				4A94583C2B23C8150028A2AD /* Client.swift in Sources */,
 				4A9458232B23B7E50028A2AD /* SceneDelegate.swift in Sources */,
 				4A9458462B23E34D0028A2AD /* ErrorResponse.swift in Sources */,
 				4A9458532B2400710028A2AD /* StudentLocations.swift in Sources */,
+				4A94585F2B2560B00028A2AD /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
