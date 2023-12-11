@@ -112,10 +112,6 @@ final class ListView: UIView {
 }
 
 extension ListView: UITableViewDelegate, UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return studentLocations.count
     }
@@ -124,10 +120,12 @@ extension ListView: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
 
         let studentLocation = studentLocations[indexPath.row]
+        let firstName: String = studentLocation.firstName ?? ""
+        let lastName: String = studentLocation.lastName ?? ""
 
         var content = cell.defaultContentConfiguration()
-        content.text = "\(studentLocation.firstName) \(studentLocation.lastName)"
-        content.secondaryText = "\(studentLocation.mediaURL)"
+        content.text = "\(firstName) \(lastName)"
+        content.secondaryText = studentLocation.mediaURL
         content.image = UIImage(named: "icon_pin")
 
         cell.contentConfiguration = content
@@ -136,12 +134,12 @@ extension ListView: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let mediaURL = studentLocations[indexPath.row].mediaURL
+        if let mediaURL = studentLocations[indexPath.row].mediaURL {
 
-        tableView.cellForRow(at: indexPath)?.selectionStyle = .none
-        
-        guard let url = URL(string: mediaURL) else { return }
-        UIApplication.shared.open(url)
+            tableView.cellForRow(at: indexPath)?.selectionStyle = .none
 
+            guard let url = URL(string: mediaURL) else { return }
+            UIApplication.shared.open(url)
+        }
     }
 }

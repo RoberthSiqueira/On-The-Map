@@ -18,7 +18,6 @@ class MapViewController: UIViewController {
         mapView.delegate = self
         view = mapView
 
-        mapView.requestingData()
         requestStudentLocations()
     }
 
@@ -66,16 +65,19 @@ class MapViewController: UIViewController {
         var annotations: [MKAnnotation] = []
 
         for location in studentLocations {
-            let lat = CLLocationDegrees(location.latitude)
-            let long = CLLocationDegrees(location.longitude)
+            let lat = CLLocationDegrees(location.latitude ?? .zero)
+            let long = CLLocationDegrees(location.longitude ?? .zero)
             let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
 
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = coordinate
-            annotation.title = "\(location.firstName) \(location.lastName)"
-            annotation.subtitle = location.mediaURL
 
-            annotations.append(annotation)
+            if let firstName = location.firstName, let lastName = location.lastName {
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = coordinate
+                annotation.title = "\(firstName) \(lastName)"
+                annotation.subtitle = location.mediaURL
+
+                annotations.append(annotation)
+            }
         }
         mapView.setupAnnotations(annotations: annotations)
     }

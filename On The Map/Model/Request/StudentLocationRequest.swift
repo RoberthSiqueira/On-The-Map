@@ -6,8 +6,8 @@ struct StudentLocationRequest: Codable {
     let lastName: String
     let locality: String
     let mediaURL: String
-    let latitude: String
-    let longitude: String
+    let latitude: Double
+    let longitude: Double
 
     enum CodingKeys: String, CodingKey {
         case userId = "uniqueKey"

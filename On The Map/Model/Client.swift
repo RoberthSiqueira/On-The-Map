@@ -19,17 +19,16 @@ class Client {
         case logout
         case getStudentLocation
         case postStudentLocation
-        case putStudentLocation
         case users(uniqueKey: String)
 
         var stringValue: String {
             switch self {
                 case .login, .logout:
                     return Endpoints.baseURL + "/session"
-                case .getStudentLocation, .postStudentLocation:
-                    return Endpoints.baseURL + "/StudentLocation"
-                case .putStudentLocation:
-                    return Endpoints.baseURL + "/StudentLocation" + "/\(Auth.objectId)"
+                case .getStudentLocation:
+                    return Endpoints.baseURL + "/StudentLocation?limit=100&order=-updatedAt"
+                case .postStudentLocation:
+                    return Endpoints.baseURL + "/StudentLocation"// + "/uniqueKey=\(Auth.userId)"
                 case .users(let uniqueKey):
                     return Endpoints.baseURL + "/users/\(uniqueKey)"
             }
@@ -80,9 +79,10 @@ class Client {
     class func postStudentLocation(user: UserModelView, completion: @escaping (Bool, Error?) -> Void) {
         let body = StudentLocationRequest(userId: Auth.userId, firstName: user.firstName, lastName: user.lastName,
                                           locality: user.locality, mediaURL: user.mediaURL, latitude: user.latitude, longitude: user.longitude)
-        taskPOSTRequest(url: Endpoints.postStudentLocation.url, api: .parse, body: body, response: Bool.self) { result in
+        taskPOSTRequest(url: Endpoints.postStudentLocation.url, api: .parse, body: body, response: StudentLocation.self) { result in
             switch result {
-                case .success:
+                case .success(let studentLocation):
+                    Auth.objectId = studentLocation.objectId ?? ""
                     completion(true, nil)
                 case .failure(let error):
                     completion(false, error)
@@ -131,13 +131,6 @@ class Client {
 
             do {
                 var object: ResponseType
-
-                guard ResponseType.self != Bool.self else {
-                    DispatchQueue.main.async {
-                        completion(.success(true as! ResponseType))
-                    }
-                    return
-                }
 
                 switch api {
                     case .parse:

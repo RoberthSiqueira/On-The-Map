@@ -5,6 +5,6 @@ struct UserModelView {
     let lastName: String
     let locality: String
     let mediaURL: String
-    let latitude: String
-    let longitude: String
+    let latitude: Double
+    let longitude: Double
 }

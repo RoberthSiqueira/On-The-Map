@@ -65,8 +65,8 @@ class InformationPostingViewController: UIViewController {
     private func handleGetUser(annotation: MKAnnotation, mediaURL: String, user: User?, error: Error?) {
         if let user = user, error == nil {
             let locality: String = (annotation.title ?? "") ?? ""
-            let latitude = annotation.coordinate.latitude.description
-            let longitude = annotation.coordinate.longitude.description
+            let latitude = annotation.coordinate.latitude
+            let longitude = annotation.coordinate.longitude
 
             let userModelView = UserModelView(firstName: user.firstName,
                                               lastName: user.lastName,
