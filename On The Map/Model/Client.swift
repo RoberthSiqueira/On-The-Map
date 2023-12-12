@@ -28,7 +28,7 @@ class Client {
                 case .getStudentLocation:
                     return Endpoints.baseURL + "/StudentLocation?limit=100&order=-updatedAt"
                 case .postStudentLocation:
-                    return Endpoints.baseURL + "/StudentLocation"// + "/uniqueKey=\(Auth.userId)"
+                    return Endpoints.baseURL + "/StudentLocation"
                 case .users(let uniqueKey):
                     return Endpoints.baseURL + "/users/\(uniqueKey)"
             }
